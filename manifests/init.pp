@@ -142,6 +142,7 @@ class locales (
   $config_file         = $locales::params::config_file,
   $locale_gen_cmd      = $locales::params::locale_gen_cmd,
   $default_file        = $locales::params::default_file,
+  $systemd_conf        = $locales::params::systemd_conf,
   $update_locale_pkg   = $locales::params::update_locale_pkg,
   $update_locale_cmd   = $locales::params::update_locale_cmd,
   $supported_locales   = $locales::params::supported_locales # ALL locales support
@@ -228,6 +229,16 @@ class locales (
     require => $update_locale_require,
   }
 
+  if $::osfamily == 'Suse' {
+    file { $systemd_conf:
+      ensure  => $ensure,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template("${module_name}/locale.erb"),
+    }
+  }
+
   if $update_locale_cmd {
     exec { 'update-locale':
       command     => $update_locale_cmd,
@@ -238,3 +249,4 @@ class locales (
     }
   }
 }
+
