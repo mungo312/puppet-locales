@@ -83,6 +83,7 @@ class locales::params {
       $update_locale_cmd = undef
       $config_file = undef
       $update_locale_pkg = false
+      $systemd_conf = '/etc/locale.conf'
     }
     /(Archlinux)/: {
       $package           = 'glibc'
@@ -96,3 +97,4 @@ class locales::params {
     }
   }
 }
+
